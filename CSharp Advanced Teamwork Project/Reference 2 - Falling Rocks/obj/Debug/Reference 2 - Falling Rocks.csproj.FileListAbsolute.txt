@@ -1,0 +1,5 @@
+E:\Soft Uni\Teamwork and Personal Skills\CSharp Advanced Teamwork Project\Reference 2 - Falling Rocks\bin\Debug\Reference 2 - Falling Rocks.exe.config
+E:\Soft Uni\Teamwork and Personal Skills\CSharp Advanced Teamwork Project\Reference 2 - Falling Rocks\bin\Debug\Reference 2 - Falling Rocks.exe
+E:\Soft Uni\Teamwork and Personal Skills\CSharp Advanced Teamwork Project\Reference 2 - Falling Rocks\bin\Debug\Reference 2 - Falling Rocks.pdb
+E:\Soft Uni\Teamwork and Personal Skills\CSharp Advanced Teamwork Project\Reference 2 - Falling Rocks\obj\Debug\Reference 2 - Falling Rocks.exe
+E:\Soft Uni\Teamwork and Personal Skills\CSharp Advanced Teamwork Project\Reference 2 - Falling Rocks\obj\Debug\Reference 2 - Falling Rocks.pdb

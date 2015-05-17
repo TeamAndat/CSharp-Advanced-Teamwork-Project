@@ -1,1 +1,2 @@
 E:\Soft Uni\Exams and Labs\CSharp Advanced\CSharp Advanced Teamwork Project\GameScaffold\bin\Debug\GameScaffold.exe.config
+E:\Soft Uni\Teamwork and Personal Skills\CSharp Advanced Teamwork Project\GameScaffold\bin\Debug\GameScaffold.exe.config
