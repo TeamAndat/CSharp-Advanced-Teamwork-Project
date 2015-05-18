@@ -84,11 +84,8 @@ class Game
 
         //Thread Sleep (Game Speed)
     }
+    //Initialization
     static void InitializeObjects()
-    {
-    }
-
-    static void ReadUserKey()
     {
     }
 
@@ -97,14 +94,28 @@ class Game
     {
     }
 
+    //Read User Key
+    static void ReadUserKey()
+    {
+    }
+
     //Colision
     static void CheckForCollision()
     {
     }
-    static void CollisionEnemies()
+
+    //Enemy AI
+    static void EnemyAi()
     {
     }
-    static void CollisionTerrain()
+
+    //Draw the screen
+    static void DrawTheScreen()
+    {
+    }
+
+    //Clear States
+    static void ClearStates()
     {
     }
 
