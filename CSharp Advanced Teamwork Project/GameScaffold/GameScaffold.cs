@@ -72,6 +72,13 @@ class Game
         //COllision with terrain and out of bounds
         //Collision with other enemies and their previous positions
 
+        //Drawing the screen
+        //clear the previous screen first
+        //draw objects on the matrix
+        //print the matrix
+
+        //Clearing all states
+
         //GameOver
 
 
