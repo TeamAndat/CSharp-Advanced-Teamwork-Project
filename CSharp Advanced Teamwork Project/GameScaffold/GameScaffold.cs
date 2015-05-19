@@ -24,7 +24,13 @@ class Game
     {
 
     }
-
+    const int BoardWidth = 65;
+    const int BoardHeight = 25;
+    const int GuiWidth = 25;
+    const int GameWidth = BoardWidth + GuiWidth;
+    const int GameHeight = BoardHeight;
+    static int health = 100;
+    static int score = 0;
     //Static declaration so it's easily accesible
     //Declaration
     //declare player object
@@ -36,15 +42,14 @@ class Game
 
     static void Main()
     {
-
         // Console settings and GUI Initialization
-        //hide cursor
-        //set absolute height and width
-        //set GUI height and width
-        //set playing board height and width
-        //draw player stats (health, damage etc.)
-        //draw score
-
+        Console.CursorVisible = false;
+        Console.Title = ""; // Add title
+        Console.WindowWidth = GameWidth;
+        Console.BufferWidth = GameWidth;
+        Console.WindowHeight = GameHeight;
+        Console.BufferHeight = GameHeight;
+        PrintGUI();
         //Initialization
         //player can be initialized entirely with a constructor in the struct
         //randomly create between 0 and X terrain objects (generate random char from a list for shape within the constuctor)
@@ -77,6 +82,53 @@ class Game
 
         //Thread Sleep (Game Speed)
     }
+    static void PrintGUI()
+    {
+        for (int row = 0; row < GameHeight; row++)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.SetCursorPosition(BoardWidth + 1, row);
+            Console.Write("║");
+        }
+        Console.SetCursorPosition(BoardWidth + (GuiWidth - 7)/ 2, 1);
+        Console.WriteLine("Controls:");
+        Console.SetCursorPosition(BoardWidth + GuiWidth / 2, 3);
+        Console.WriteLine(" ↑");
+        Console.SetCursorPosition(BoardWidth + 3, 4);
+        Console.WriteLine(" Move:   ← →");
+        Console.SetCursorPosition(BoardWidth + GuiWidth / 2, 5);
+        Console.WriteLine(" ↓");
+        Console.SetCursorPosition(BoardWidth + 2, 7);
+        Console.WriteLine(" Attack:   Z");
+        Console.SetCursorPosition(BoardWidth + 2, 9);
+        Console.WriteLine(new string('═', GuiWidth - 2));
+        Console.SetCursorPosition(BoardWidth + (GuiWidth - 12) /2, 11);
+        Console.WriteLine("Player Stats:");
+        Console.SetCursorPosition(BoardWidth + 4, 13);
+        Console.WriteLine("Health:");
+        Console.SetCursorPosition(BoardWidth + 15, 13);
+        Console.WriteLine(health);
+        Console.SetCursorPosition(BoardWidth + 2, 18);
+        Console.WriteLine(new string('═', GuiWidth - 2));
+        Console.SetCursorPosition(BoardWidth + 4, 20);
+        Console.WriteLine("Score:");
+        Console.SetCursorPosition(BoardWidth + 13, 20);
+        Console.WriteLine(score);
+    }
+    static void LowerHealth(int lower)
+    {
+        Console.SetCursorPosition(BoardWidth + 15, 13);
+        Console.WriteLine("   ");
+        Console.SetCursorPosition(BoardWidth + 15, 13);
+        Console.WriteLine(health - lower);
+    }
+    static void ChangeScore(int addScore)
+    {
+        Console.SetCursorPosition(BoardWidth + 13, 20);
+        Console.WriteLine("            ");
+        Console.SetCursorPosition(BoardWidth + 13, 20);
+        Console.WriteLine(score + addScore);
+    } 
     static void InitializeObjects()
     {
     }
