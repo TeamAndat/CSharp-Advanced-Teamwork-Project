@@ -77,11 +77,19 @@ class Game
         //COllision with terrain and out of bounds
         //Collision with other enemies and their previous positions
 
+        //Drawing the screen
+        //clear the previous screen first
+        //draw objects on the matrix
+        //print the matrix
+
+        //Clearing all states
+
         //GameOver
 
 
         //Thread Sleep (Game Speed)
     }
+<<<<<<< HEAD
     static void PrintGUI()
     {
         for (int row = 0; row < GameHeight; row++)
@@ -128,12 +136,9 @@ class Game
         Console.WriteLine("            ");
         Console.SetCursorPosition(BoardWidth + 13, 20);
         Console.WriteLine(score + addScore);
-    } 
-    static void InitializeObjects()
-    {
     }
-
-    static void ReadUserKey()
+    //Initialization
+    static void InitializeObjects()
     {
     }
 
@@ -142,14 +147,28 @@ class Game
     {
     }
 
+    //Read User Key
+    static void ReadUserKey()
+    {
+    }
+
     //Colision
     static void CheckForCollision()
     {
     }
-    static void CollisionEnemies()
+
+    //Enemy AI
+    static void EnemyAi()
     {
     }
-    static void CollisionTerrain()
+
+    //Draw the screen
+    static void DrawTheScreen()
+    {
+    }
+
+    //Clear States
+    static void ClearStates()
     {
     }
 
