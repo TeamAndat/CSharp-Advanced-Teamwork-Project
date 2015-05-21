@@ -6,24 +6,75 @@ using System.Threading.Tasks;
 using System.IO;
 
 
+
+class Player
+{
+    public int HP { get; set; }
+    public int dmg { get; set; }
+    public char shape { get; set; }
+    public ConsoleColor color { get; set; }
+    public int X { get; set; }
+    public int Y { get; set; }
+
+    public Player()
+    {
+        this.HP = 100;
+        this.dmg = 10;
+        this.shape = '\u263B';
+        this.color = ConsoleColor.Cyan;
+        this.X = 0;
+        this.Y = 0;
+    }
+}
+class Enemies
+{
+    public int HP { get; set; }
+    public int dmg { get; set; }
+    public char shape { get; set; }
+    public ConsoleColor color { get; set; }
+    public int X { get; set; }
+    public int Y { get; set; }
+
+    public Enemies(int x, int y)
+    {
+        this.HP = 20;
+        this.dmg = 5;
+        this.shape = '\u263A';
+        this.color = ConsoleColor.Red;
+        this.X = x;
+        this.Y = y;
+    }
+}
+class Terrain
+{
+    public char shape { get; set; }
+    public ConsoleColor color { get; set; }
+    public int X { get; set; }
+    public int Y { get; set; }
+
+    public Terrain(int x, int y)
+    {
+        char[] shapes = { '\u2588', '\u2580', '\u2593', '\u2592', '\u2591' };
+        Random random = new Random();
+        this.color = ConsoleColor.White;
+        this.X = x;
+        this.Y = y;
+        this.shape = shapes[random.Next(0, 5)];
+    }
+}
+class Position
+{
+    public int X { get; set; }
+    public int Y { get; set; }
+
+    public Position(int x, int y)
+    {
+        this.X = x;
+        this.Y = y;
+    }
+}
 class Game
 {
-    struct Player
-    {
-
-    }
-    struct Enemies
-    {
-
-    }
-    struct Terrain
-    {
-
-    }
-    struct Position
-    {
-
-    }
     const int BoardWidth = 65;
     const int BoardHeight = 25;
     const int GuiWidth = 25;
@@ -89,7 +140,7 @@ class Game
 
         //Thread Sleep (Game Speed)
     }
-<<<<<<< HEAD
+    //<<<<<<< HEAD
     static void PrintGUI()
     {
         for (int row = 0; row < GameHeight; row++)
@@ -98,7 +149,7 @@ class Game
             Console.SetCursorPosition(BoardWidth + 1, row);
             Console.Write("║");
         }
-        Console.SetCursorPosition(BoardWidth + (GuiWidth - 7)/ 2, 1);
+        Console.SetCursorPosition(BoardWidth + (GuiWidth - 7) / 2, 1);
         Console.WriteLine("Controls:");
         Console.SetCursorPosition(BoardWidth + GuiWidth / 2, 3);
         Console.WriteLine(" ↑");
@@ -110,7 +161,7 @@ class Game
         Console.WriteLine(" Attack:   Z");
         Console.SetCursorPosition(BoardWidth + 2, 9);
         Console.WriteLine(new string('═', GuiWidth - 2));
-        Console.SetCursorPosition(BoardWidth + (GuiWidth - 12) /2, 11);
+        Console.SetCursorPosition(BoardWidth + (GuiWidth - 12) / 2, 11);
         Console.WriteLine("Player Stats:");
         Console.SetCursorPosition(BoardWidth + 4, 13);
         Console.WriteLine("Health:");
@@ -122,20 +173,6 @@ class Game
         Console.WriteLine("Score:");
         Console.SetCursorPosition(BoardWidth + 13, 20);
         Console.WriteLine(score);
-    }
-    static void LowerHealth(int lower)
-    {
-        Console.SetCursorPosition(BoardWidth + 15, 13);
-        Console.WriteLine("   ");
-        Console.SetCursorPosition(BoardWidth + 15, 13);
-        Console.WriteLine(health - lower);
-    }
-    static void ChangeScore(int addScore)
-    {
-        Console.SetCursorPosition(BoardWidth + 13, 20);
-        Console.WriteLine("            ");
-        Console.SetCursorPosition(BoardWidth + 13, 20);
-        Console.WriteLine(score + addScore);
     }
     //Initialization
     static void InitializeObjects()
@@ -171,7 +208,20 @@ class Game
     static void ClearStates()
     {
     }
-
+    static void LowerHealth(int lower)
+    {
+        Console.SetCursorPosition(BoardWidth + 15, 13);
+        Console.WriteLine("   ");
+        Console.SetCursorPosition(BoardWidth + 15, 13);
+        Console.WriteLine(health - lower);
+    }
+    static void ChangeScore(int addScore)
+    {
+        Console.SetCursorPosition(BoardWidth + 13, 20);
+        Console.WriteLine("            ");
+        Console.SetCursorPosition(BoardWidth + 13, 20);
+        Console.WriteLine(score + addScore);
+    }
     //Game Over
     static void GameOver()
     {
