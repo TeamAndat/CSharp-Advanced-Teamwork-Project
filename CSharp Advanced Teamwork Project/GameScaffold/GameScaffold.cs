@@ -180,8 +180,19 @@ class Game
     }
 
     //GUI
-    static void RefreshGUI()
+    static void LowerHealth(int lower)
     {
+        Console.SetCursorPosition(BoardWidth + 15, 13);
+        Console.WriteLine("   ");
+        Console.SetCursorPosition(BoardWidth + 15, 13);
+        Console.WriteLine(health - lower);
+    }
+    static void ChangeScore(int addScore)
+    {
+        Console.SetCursorPosition(BoardWidth + 13, 20);
+        Console.WriteLine("            ");
+        Console.SetCursorPosition(BoardWidth + 13, 20);
+        Console.WriteLine(score + addScore);
     }
 
     //Read User Key
@@ -208,20 +219,7 @@ class Game
     static void ClearStates()
     {
     }
-    static void LowerHealth(int lower)
-    {
-        Console.SetCursorPosition(BoardWidth + 15, 13);
-        Console.WriteLine("   ");
-        Console.SetCursorPosition(BoardWidth + 15, 13);
-        Console.WriteLine(health - lower);
-    }
-    static void ChangeScore(int addScore)
-    {
-        Console.SetCursorPosition(BoardWidth + 13, 20);
-        Console.WriteLine("            ");
-        Console.SetCursorPosition(BoardWidth + 13, 20);
-        Console.WriteLine(score + addScore);
-    }
+ 
     //Game Over
     static void GameOver()
     {
