@@ -251,7 +251,6 @@ class Game
     static void ClearStates()
     {
     }
-
     //Game Over
     static void GameOver()
     {
