@@ -85,6 +85,7 @@ class Game
     static int score = 0;
     static Random random = new Random();
     static bool[,] boardPositions = new bool[GameHeight, GameWidth];
+    static bool[,] enemyPositions = new bool[GameHeight, GameWidth];
     static List<bool> willMove = new List<bool>();
     static List<Position> previousEnemyPosition = new List<Position>();
     //Static declaration so it's easily accesible
@@ -132,6 +133,7 @@ class Game
             {
                 Console.ForegroundColor = newEnemy.color;
                 Console.Write(newEnemy.shape);
+                enemyPositions[newEnemy.Y, newEnemy.X] = true;
                 previousEnemyPosition.Add(new Position(newEnemy.X ,newEnemy.Y));
                 willMove.Add(false);
             }
@@ -240,6 +242,41 @@ class Game
     //Enemy AI
     static void EnemyAi()
     {
+        for (int i = 0; i < willMove.Count; i++)
+        {
+            Random enemyMoveGenerator = new Random();
+            int num = enemyMoveGenerator.Next(0, 100);
+            if (num < 20)
+            {
+                willMove[i] = true;
+
+                Random directionGenerator = new Random();
+                int direction = directionGenerator.Next(0, 3);
+                Position enemyPosition = previousEnemyPosition[i];
+                enemyPositions[enemyPosition.Y, enemyPosition.X] = false;
+                
+                switch (direction)
+                {
+                    case 0:
+                        // left
+                        enemyPosition.X -= 1;
+                        break;
+                    case 1:
+                        // up
+                        enemyPosition.Y -= 1;
+                        break;
+                    case 2:
+                        // right
+                        enemyPosition.X += 1;
+                        break;
+                    case 3:
+                        // down
+                        enemyPosition.Y += 1;
+                        break;
+                }
+                enemyPositions[enemyPosition.Y, enemyPosition.X] = true;
+            }
+        }
     }
 
     //Draw the screen
