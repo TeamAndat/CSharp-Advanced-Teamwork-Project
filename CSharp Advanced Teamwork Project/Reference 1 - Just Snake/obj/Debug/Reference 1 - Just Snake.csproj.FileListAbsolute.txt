@@ -4,3 +4,6 @@ E:\Soft Uni\Teamwork and Personal Skills\CSharp Advanced Teamwork Project\Refere
 E:\Soft Uni\Teamwork and Personal Skills\CSharp Advanced Teamwork Project\Reference 1 - Just Snake\obj\Debug\Reference 1 - Just Snake.csprojResolveAssemblyReference.cache
 E:\Soft Uni\Teamwork and Personal Skills\CSharp Advanced Teamwork Project\Reference 1 - Just Snake\obj\Debug\Reference 1 - Just Snake.exe
 E:\Soft Uni\Teamwork and Personal Skills\CSharp Advanced Teamwork Project\Reference 1 - Just Snake\obj\Debug\Reference 1 - Just Snake.pdb
+D:\Users\Jozi\Desktop\softuni\C# Advanced\Teamwork Project\CSharp Advanced Teamwork Project\Reference 1 - Just Snake\bin\Debug\Reference 1 - Just Snake.exe.config
+D:\Users\Jozi\Desktop\softuni\C# Advanced\Teamwork Project\CSharp Advanced Teamwork Project\Reference 1 - Just Snake\obj\Debug\Reference 1 - Just Snake.exe
+D:\Users\Jozi\Desktop\softuni\C# Advanced\Teamwork Project\CSharp Advanced Teamwork Project\Reference 1 - Just Snake\obj\Debug\Reference 1 - Just Snake.pdb

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Threading;
 
 
 
@@ -82,6 +83,10 @@ class Game
     const int GameHeight = BoardHeight;
     static int health = 100;
     static int score = 0;
+    static Random random = new Random();
+    static bool[,] boardPositions = new bool[GameHeight, GameWidth];
+    static List<bool> willMove = new List<bool>();
+    static List<Position> previousEnemyPosition = new List<Position>();
     //Static declaration so it's easily accesible
     //Declaration
     //declare player object
@@ -103,11 +108,38 @@ class Game
         PrintGUI();
         //Initialization
         //player can be initialized entirely with a constructor in the struct
-        //randomly create between 0 and X terrain objects (generate random char from a list for shape within the constuctor)
-        //randomly set terrain position (check that it isn't within 1 square to the player and not on top of itself)
-        //randomly generate between 0 and Y enemy objects (colors and shape will be created by the constructor of the class)
-        //randomly set enemies starting positions ( check it isn't near the player and not on top of terrain and not on top of itself)
-
+        //Initialize Terrain
+        int numberOfTerrainObjects = random.Next(20, 40);
+        for (int i = 0; i < numberOfTerrainObjects; i++)
+        {
+            Terrain newTerrain = new Terrain(random.Next(0, BoardWidth), random.Next(0, BoardHeight));
+            Console.SetCursorPosition(newTerrain.X, newTerrain.Y);
+            if (newTerrain.X > 2 && newTerrain.Y > 2)
+            {
+                Console.ForegroundColor = newTerrain.color;
+                Console.Write(newTerrain.shape);
+                boardPositions[newTerrain.Y, newTerrain.X] = true;
+            }
+        }
+        //Initialize Enemies
+        int numberOfEnemies = random.Next(4, 12);
+        int iterations = numberOfEnemies;
+        for (int i = 0; i < iterations; i++)
+        {
+            Enemies newEnemy = new Enemies(random.Next(0, BoardWidth), random.Next(0, BoardHeight));
+            Console.SetCursorPosition(newEnemy.X, newEnemy.Y);
+            if (boardPositions[newEnemy.Y, newEnemy.X] == false && (newEnemy.X > 2 && newEnemy.Y > 2))
+            {
+                Console.ForegroundColor = newEnemy.color;
+                Console.Write(newEnemy.shape);
+                previousEnemyPosition.Add(new Position(newEnemy.X ,newEnemy.Y));
+                willMove.Add(false);
+            }
+            else
+            {
+                iterations++;
+            }
+        }
         //while(true) running part of the game
 
         //GUI Refresh
@@ -118,7 +150,7 @@ class Game
         //Declare Attack
 
         //AI Enemy Movement
-        //Enemy Movemen
+        //Enemy Movement
 
         //CheckForCollision
         //Player Collision
@@ -180,8 +212,19 @@ class Game
     }
 
     //GUI
-    static void RefreshGUI()
+    static void LowerHealth(int lower)
     {
+        Console.SetCursorPosition(BoardWidth + 15, 13);
+        Console.WriteLine("   ");
+        Console.SetCursorPosition(BoardWidth + 15, 13);
+        Console.WriteLine(health - lower);
+    }
+    static void ChangeScore(int addScore)
+    {
+        Console.SetCursorPosition(BoardWidth + 13, 20);
+        Console.WriteLine("            ");
+        Console.SetCursorPosition(BoardWidth + 13, 20);
+        Console.WriteLine(score + addScore);
     }
 
     //Read User Key
@@ -208,20 +251,7 @@ class Game
     static void ClearStates()
     {
     }
-    static void LowerHealth(int lower)
-    {
-        Console.SetCursorPosition(BoardWidth + 15, 13);
-        Console.WriteLine("   ");
-        Console.SetCursorPosition(BoardWidth + 15, 13);
-        Console.WriteLine(health - lower);
-    }
-    static void ChangeScore(int addScore)
-    {
-        Console.SetCursorPosition(BoardWidth + 13, 20);
-        Console.WriteLine("            ");
-        Console.SetCursorPosition(BoardWidth + 13, 20);
-        Console.WriteLine(score + addScore);
-    }
+
     //Game Over
     static void GameOver()
     {
