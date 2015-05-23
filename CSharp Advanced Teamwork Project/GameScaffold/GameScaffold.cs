@@ -192,7 +192,6 @@ class Game
         {
 
         }
-
         //AI Enemy Movement
         //Enemy Movement
 
@@ -332,11 +331,12 @@ class Game
     //Game Over
     static void GameOver()
     {
-        Console.SetCursorPosition(BoardWidth / 2, BoardHeight / 2);
+        Console.SetCursorPosition(BoardWidth / 2 - 6, BoardHeight / 2);
         Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine("Game over!!!");
-        Console.SetCursorPosition(BoardWidth / 2, BoardHeight / 2 + 1);
+        Console.SetCursorPosition(BoardWidth / 2 - 6, BoardHeight / 2 + 1);
         Console.WriteLine("Score: {0}", score);
+        Console.SetCursorPosition(BoardWidth / 2 - 6, BoardHeight / 2 + 2);
         return;
     }
 }
