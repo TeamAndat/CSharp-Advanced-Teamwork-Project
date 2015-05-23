@@ -336,7 +336,7 @@ class Game
         Console.WriteLine("Game over!!!");
         Console.SetCursorPosition(BoardWidth / 2 - 6, BoardHeight / 2 + 1);
         Console.WriteLine("Score: {0}", score);
-        Console.SetCursorPosition(BoardWidth / 2 - 6, BoardHeight / 2 + 2);
+        Console.SetCursorPosition(BoardWidth / 2 - 12, BoardHeight / 2 + 2);
         return;
     }
 }
