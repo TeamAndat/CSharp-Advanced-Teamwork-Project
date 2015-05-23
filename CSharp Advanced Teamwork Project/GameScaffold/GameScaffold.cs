@@ -89,13 +89,23 @@ class Game
     static List<bool> willMove = new List<bool>();
     static List<Position> previousEnemyPosition = new List<Position>();
     //Static declaration so it's easily accesible
-    //Declaration
-    //declare player object
+     //declare player object
+    static Player player = new Player();
+    
     //declare terrain (list of the struct type, fill them upon initialization)
+    static List<Terrain> terrain = new List<Terrain>();
+
     //declare enemy objects (list of the struct type, fill them upon initialization)
+    static List<Enemies> enemies = new List<Enemies>();
+
     //movement
+    static Position previousPosition;
+
     //attack
+    Position attackedPosition;
+
     //enemy movement
+    List<Position> previousEnemyPosition;
 
     static void Main()
     {
