@@ -104,9 +104,6 @@ class Game
     //attack
     static Position attackedPosition;
 
-    //enemy movement
-    static List<Position> previousEnemyPosition;
-
     static void Main()
     {
         // Console settings and GUI Initialization
