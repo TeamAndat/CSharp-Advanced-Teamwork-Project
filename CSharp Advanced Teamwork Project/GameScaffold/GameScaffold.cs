@@ -155,8 +155,43 @@ class Game
         //change GUI values each tick
 
         //Read User Key
+        string currentDirection = "right";
+        ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+        
         //Declare movement
+        if (keyInfo.Key == ConsoleKey.UpArrow)
+        {
+            previousPosition = new Position(player.X, player.Y);
+            player.X = player.X;
+            player.Y = player.Y + 1;
+            currentDirection = "up";
+        }
+        else if (keyInfo.Key == ConsoleKey.DownArrow)
+        {
+            previousPosition = new Position(player.X, player.Y);
+            player.X = player.X;
+            player.Y = player.Y - 1;
+            currentDirection = "down";
+        }
+        else if (keyInfo.Key == ConsoleKey.RightArrow)
+        {
+            previousPosition = new Position(player.X, player.Y);
+            player.X = player.X + 1;
+            player.Y = player.Y;
+            currentDirection = "right";
+        }
+        else if (keyInfo.Key == ConsoleKey.LeftArrow)
+        {
+            previousPosition = new Position(player.X, player.Y);
+            player.X = player.X - 1;
+            player.Y = player.Y;
+            currentDirection = "left";
+        }
         //Declare Attack
+        if (Convert.ToString(keyInfo.KeyChar) == "z")
+        {
+
+        }
 
         //AI Enemy Movement
         //Enemy Movement
