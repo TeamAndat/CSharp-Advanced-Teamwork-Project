@@ -102,10 +102,10 @@ class Game
     static Position previousPosition;
 
     //attack
-    Position attackedPosition;
+    static Position attackedPosition;
 
     //enemy movement
-    List<Position> previousEnemyPosition;
+    static List<Position> previousEnemyPosition;
 
     static void Main()
     {
