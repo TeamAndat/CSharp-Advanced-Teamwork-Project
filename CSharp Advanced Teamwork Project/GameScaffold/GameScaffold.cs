@@ -22,6 +22,17 @@ class Game
     static Position attackedPosition = new Position(0, 0);
     static Position previousPosition = new Position(player.X, player.Y);
     static string currentDirection = "right";
+    static bool hasBow = false;
+    static bool hasArmor = false;
+
+    //Items
+    static List<Items> items = new List<Items>();
+    static bool[,] itemPositions = new bool[BoardWidth, BoardHeight];
+
+    //Arrows
+    static List<Arrow> arrows = new List<Arrow>();
+    static List<Position> previousArrowPosition = new List<Position>();
+
 
     //terrain
     static List<Terrain> terrain = new List<Terrain>();
@@ -41,6 +52,7 @@ class Game
     const int GameWidth = BoardWidth + GuiWidth;
     const int GameHeight = BoardHeight;
     static int score = 0;
+
 
     static void Main()
     {
@@ -74,6 +86,7 @@ class Game
             EnemyAi();
             CheckForCollision();
             DrawTheScreen();
+            FlyArrows();
             DrawHealth();
             ChangeScore();
             ClearStates();
@@ -87,7 +100,7 @@ class Game
                 Console.SetCursorPosition(BoardWidth / 2 - 6, BoardHeight / 2 + 1);
                 Console.WriteLine("Score: {0}", score);
                 Console.SetCursorPosition(BoardWidth / 2 - 12, BoardHeight / 2 + 2);
-                Thread.Sleep(2500);
+                Lose();
                 return;
             }
 
@@ -100,7 +113,7 @@ class Game
                 Console.SetCursorPosition(BoardWidth / 2 - 6, BoardHeight / 2 + 1);
                 Console.WriteLine("Score: {0}", score);
                 Console.SetCursorPosition(BoardWidth / 2 - 12, BoardHeight / 2 + 2);
-                Thread.Sleep(2500);
+                Win();
                 return;
             }
 
@@ -114,12 +127,13 @@ class Game
     //Initialization
     static void InitializeObjects()
     {
+     
         //Initialize Terrain
         int numberOfTerrainObjects = random.Next(300, 350);
         for (int i = 0; i < numberOfTerrainObjects; i++)
         {
             Terrain newTerrain = new Terrain(random.Next(0, BoardWidth), random.Next(0, BoardHeight), random.Next(0, 100));
-            if ((newTerrain.X > 1 || newTerrain.Y > 1) && terrainPositions[newTerrain.X, newTerrain.Y] == false)
+            if ((newTerrain.X > 2 || newTerrain.Y > 2) && terrainPositions[newTerrain.X, newTerrain.Y] == false)
             {
                 terrainPositions[newTerrain.X, newTerrain.Y] = true;
                 terrain.Add(newTerrain);
@@ -128,16 +142,29 @@ class Game
 
         }
         //Initialize Enemies
-        int numberOfEnemies = random.Next(10, 20);
+        int numberOfEnemies = random.Next(14, 26);
         for (int i = 0; i < numberOfEnemies; i++)
         {
-            Enemies newEnemy = new Enemies(random.Next(0, BoardWidth), random.Next(0, BoardHeight));
+            Enemies newEnemy = new Enemies(random.Next(0, BoardWidth), random.Next(0, BoardHeight), random.Next(40,71),random.Next(3,11));
             if (terrainPositions[newEnemy.X, newEnemy.Y] == false && enemyPositions[newEnemy.X, newEnemy.Y] == false && (newEnemy.X > 2 || newEnemy.Y > 2))
             {
                 enemyPositions[newEnemy.X, newEnemy.Y] = true;
                 previousEnemyPosition.Add(new Position(newEnemy.X, newEnemy.Y));
                 willMove.Add(false);
                 enemies.Add(newEnemy);
+            }
+            else i = i - 1;
+        }
+
+        //Initialize Items
+        int numberOfItemObjects = random.Next(2, 6);
+        for (int i = 0; i < numberOfItemObjects; i++)
+        {
+            Items newItem = new Items(random.Next(0, BoardWidth), random.Next(0, BoardHeight), random.Next(0, 14));
+            if ((newItem.X > 1 || newItem.Y > 1) && itemPositions[newItem.X, newItem.Y] == false && terrainPositions[newItem.X, newItem.Y] == false && enemyPositions[newItem.X, newItem.Y] == false)
+            {
+                itemPositions[newItem.X, newItem.Y] = true;
+                items.Add(newItem);
             }
             else i = i - 1;
         }
@@ -170,12 +197,24 @@ class Game
         Console.SetCursorPosition(BoardWidth + 4, 13);
         Console.WriteLine("Health:");
         Console.SetCursorPosition(BoardWidth + 15, 13);
-        Console.WriteLine(player.HP);
-        Console.SetCursorPosition(BoardWidth + 1, 18);
+        Console.WriteLine("{0}",player.HP);
+        Console.SetCursorPosition(BoardWidth + 19, 13);
+        Console.WriteLine("♥");
+        Console.SetCursorPosition(BoardWidth + (GuiWidth - 6) / 2,15);
+        Console.WriteLine("Items:");
+        Console.SetCursorPosition(BoardWidth + 1, 17);
+        Console.WriteLine("╔   ╗");
+        Console.SetCursorPosition(BoardWidth + 1, 19);
+        Console.WriteLine("╚   ╝");
+        Console.SetCursorPosition(BoardWidth + 12, 17);
+        Console.WriteLine("╔   ╗");
+        Console.SetCursorPosition(BoardWidth + 12, 19);
+        Console.WriteLine("╚   ╝");
+        Console.SetCursorPosition(BoardWidth + 1, 20);
         Console.WriteLine(new string('═', GuiWidth - 1));
-        Console.SetCursorPosition(BoardWidth + 4, 20);
+        Console.SetCursorPosition(BoardWidth + 4, 22);
         Console.WriteLine("Score:");
-        Console.SetCursorPosition(BoardWidth + 13, 20);
+        Console.SetCursorPosition(BoardWidth + 13, 22);
         Console.WriteLine(score);
     }
     static void DrawHealth()
@@ -183,13 +222,15 @@ class Game
         Console.SetCursorPosition(BoardWidth + 15, 13);
         Console.WriteLine("   ");
         Console.SetCursorPosition(BoardWidth + 15, 13);
-        Console.WriteLine(player.HP);
+        Console.WriteLine("{0}",player.HP);
+        Console.SetCursorPosition(BoardWidth + 19, 13);
+        Console.WriteLine("♥");
     }
     static void ChangeScore()
     {
-        Console.SetCursorPosition(BoardWidth + 13, 20);
+        Console.SetCursorPosition(BoardWidth + 13, 22);
         Console.WriteLine("            ");
-        Console.SetCursorPosition(BoardWidth + 13, 20);
+        Console.SetCursorPosition(BoardWidth + 13, 22);
         Console.WriteLine(score);
     }
 
@@ -256,6 +297,12 @@ class Game
                     terrainPositions[attackedPosition.X, attackedPosition.Y] == false)
                 {
                     hasAttacked = true;
+                    if(hasBow)
+                    {
+                        Arrow newArrow = new Arrow(attackedPosition.X, attackedPosition.Y,currentDirection);
+                        arrows.Add(newArrow);
+                        previousArrowPosition.Add(new Position(attackedPosition.X, attackedPosition.Y));
+                    }
                 }
 
             }
@@ -263,10 +310,26 @@ class Game
         
     }
 
+    //Fly Arrows
+    static void FlyArrows()
+    {
+        for (int i = 0; i < arrows.Count; i++)
+        {
+            previousArrowPosition[i].X = arrows[i].X;
+            previousArrowPosition[i].Y = arrows[i].Y;
+            switch(arrows[i].Direction)
+            {
+                case "up": arrows[i].Y -= 1; break;
+                case "down": arrows[i].Y += 1; break;
+                case "left": arrows[i].X -= 1; break;
+                case "right": arrows[i].X += 1; break;
+            }
+        }
+    }
+
     //Colision
     static void CheckForCollision()
     {
-
         //Check for enemy collision
         for (int i = 0; i < enemies.Count; i++)
         {
@@ -282,7 +345,7 @@ class Game
                 }
                 else if (enemies[i].X == player.X && enemies[i].Y == player.Y)
                 {
-                    player.HP = player.HP - enemies[i].dmg;
+                    player.HP = player.HP - (enemies[i].dmg - player.Armor);
                     enemies[i].X = previousEnemyPosition[i].X;
                     enemies[i].Y = previousEnemyPosition[i].Y;
                     Hurt();
@@ -311,8 +374,9 @@ class Game
             {
                 if (enemies[i].X == player.X && enemies[i].Y == player.Y)
                 {
-                    player.HP = player.HP - enemies[i].dmg;
+                    player.HP = player.HP - (enemies[i].dmg - player.Armor);
                     Hurt();
+                    break;
                 }
             }
             Console.SetCursorPosition(player.X, player.Y);
@@ -320,26 +384,61 @@ class Game
             player.X = previousPosition.X;
             player.Y = previousPosition.Y;
         }
-
-        //Check for attacks
-        for (int i = 0; i < enemies.Count; i++)
+        //Check for player collision with items
+        if(itemPositions[player.X,player.Y])
         {
-            if (hasAttacked == true && attackedPosition.X == enemies[i].X && attackedPosition.Y == enemies[i].Y)
+            for (int i = 0; i < items.Count; i++)
             {
-                enemies[i].HP = enemies[i].HP - player.dmg;
-                Hit();
-                // Remove dead enemies
-                if (enemies[i].HP <= 0)
+                if(items[i].X == player.X && items[i].Y == player.Y)
                 {
-                    previousEnemyField[previousEnemyPosition[i].X, previousEnemyPosition[i].Y] = false;
-                    enemyPositions[enemies[i].X, enemies[i].Y] = false;
-                    enemies.RemoveAt(i);
-                    willMove.RemoveAt(i);
-                    previousEnemyPosition.RemoveAt(i);
-                    score = score + 25;
+                    ItemEffect(items[i].Name);
+                    ItemAquired();
+                    items.RemoveAt(i);
+                    score += 50;
                 }
             }
         }
+
+        //Check for attacks
+        if(hasBow)
+        {
+            for (int i = 0; i < arrows.Count; i++)
+            {
+                if(arrows[i].X < 0 || arrows[i].X >= BoardWidth ||
+                    arrows[i].Y < 0 || arrows[i].Y >= BoardHeight ||
+                    terrainPositions[arrows[i].X,arrows[i].Y] == true)
+                {
+                    arrows[i].Broken = true;
+                }
+                else if(enemyPositions[arrows[i].X,arrows[i].Y] == true)
+                {
+                    for (int l = 0; l < enemies.Count; l++)
+                    {
+                        if(enemies[l].X == arrows[i].X && enemies[l].Y == arrows[i].Y)
+                        {
+                            arrows[i].Broken = true;
+                            enemies[l].HP -= player.dmg;
+                            CheckIfEnemyDied(l);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < enemies.Count; i++)
+            {
+                if (hasAttacked == true && attackedPosition.X == enemies[i].X && attackedPosition.Y == enemies[i].Y)
+                {
+                    enemies[i].HP = enemies[i].HP - player.dmg;
+                    Hit();
+                    CheckIfEnemyDied(i);
+                    break;
+                }
+            }
+        }
+        
     }
 
     //Enemy AI
@@ -391,18 +490,51 @@ class Game
         }
     }
 
+    static void CheckIfEnemyDied(int position)
+    {
+        // Remove dead enemies
+        if (enemies[position].HP <= 0)
+        {
+            previousEnemyField[previousEnemyPosition[position].X, previousEnemyPosition[position].Y] = false;
+            enemyPositions[enemies[position].X, enemies[position].Y] = false;
+            Console.SetCursorPosition(enemies[position].X, enemies[position].Y);
+            Console.Write(" ");
+            enemies.RemoveAt(position);
+            willMove.RemoveAt(position);
+            previousEnemyPosition.RemoveAt(position);
+            score = score + 25;
+        }
+    }
+
     //Draw the screen
     static void DrawTheScreen()
     {
         //Clear attack
-        if (hasAttacked == false &&
-            attackedPosition.X >= 0 && attackedPosition.X < BoardWidth &&
-            attackedPosition.Y >= 0 && attackedPosition.Y < BoardHeight &&
-             terrainPositions[attackedPosition.X, attackedPosition.Y] == false)
+        if(hasBow)
         {
-            Console.SetCursorPosition(attackedPosition.X, attackedPosition.Y);
-            Console.Write(" ");
+            for (int i = 0; i < arrows.Count; i++)
+            {
+                Console.SetCursorPosition(previousArrowPosition[i].X, previousArrowPosition[i].Y);
+                Console.Write(" ");
+                if (arrows[i].Broken == true)
+                {
+                    arrows.RemoveAt(i);
+                    previousArrowPosition.RemoveAt(i);
+                    i--;
+                }
+            }
         }
+        else
+        {
+            if (hasAttacked == false &&
+          attackedPosition.X >= 0 && attackedPosition.X < BoardWidth &&
+          attackedPosition.Y >= 0 && attackedPosition.Y < BoardHeight &&
+           terrainPositions[attackedPosition.X, attackedPosition.Y] == false)
+            {
+                Console.SetCursorPosition(attackedPosition.X, attackedPosition.Y);
+                Console.Write(" ");
+            }
+        }   
 
         //Clear Player
         Console.SetCursorPosition(previousPosition.X, previousPosition.Y);
@@ -413,6 +545,13 @@ class Game
         {
             Console.SetCursorPosition(previousEnemyPosition[i].X, previousEnemyPosition[i].Y);
             Console.Write(" ");
+        }
+        //Draw Items
+        for (int i = 0; i < items.Count; i++)
+        {
+            Console.SetCursorPosition(items[i].X, items[i].Y);
+            Console.ForegroundColor = items[i].color;
+            Console.Write(items[i].shape);
         }
 
         //Draw Player
@@ -429,12 +568,24 @@ class Game
         }
 
         //Draw attack
-        if (hasAttacked)
+        if(hasBow)
         {
-            Console.SetCursorPosition(attackedPosition.X, attackedPosition.Y);
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write('\u2588');
+            for (int i = 0; i < arrows.Count; i++)
+            {
+                Console.SetCursorPosition(arrows[i].X, arrows[i].Y);
+                Console.ForegroundColor = arrows[i].color;
+                Console.Write(arrows[i].shape);
+            }
         }
+        else
+        {
+            if (hasAttacked)
+            {
+                Console.SetCursorPosition(attackedPosition.X, attackedPosition.Y);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write('\u2588'); // █
+            }
+        } 
     }
 
     //Clear States
@@ -444,6 +595,38 @@ class Game
         for (int i = 0; i < willMove.Count; i++)
         {
             willMove[i] = false;
+        }
+    }
+    //Items
+    static void ItemEffect(string Name)
+    {
+        switch(Name)
+        {
+            case "Cloak":
+                if (hasArmor == false)
+                {
+                    player.Armor = 2;
+                    hasArmor = true;
+                    Console.SetCursorPosition((BoardWidth + 14), 18);
+                    Console.WriteLine("♀");
+                    Console.SetCursorPosition((BoardWidth + 18), 18);
+                    Console.WriteLine("Cloak");
+                }
+                break;
+            case "Bow": 
+                if(hasBow == false)
+                {
+                    hasBow = true;
+                    Console.SetCursorPosition((BoardWidth + 3), 18);
+                    Console.WriteLine("♂");
+                    Console.SetCursorPosition((BoardWidth + 7), 18);
+                    Console.WriteLine("Bow");
+                }
+                break;
+            case "Health":
+                if (player.HP + 20 > 50) player.HP = 50;
+                else player.HP += 20;
+                break;
         }
     }
 
@@ -456,5 +639,71 @@ class Game
     {
         Console.Beep(1000, 150);
 
+    }
+    static void ItemAquired()
+    {
+        Console.Beep(1500, 100);
+        Console.Beep(2250, 100);
+        Console.Beep(3000, 300);
+    }
+    static void Lose()
+    {
+        Console.Beep(880, 500);
+        Console.Beep(587, 1000);
+        Console.Beep(698, 500);
+        Console.Beep(880, 500);
+        Console.Beep(587, 1000);
+        Console.Beep(698, 500);
+        Console.Beep(880, 250);
+        Console.Beep(1046, 250);
+        Console.Beep(987, 500);
+        Console.Beep(784, 500);
+        Console.Beep(698, 250);
+        Console.Beep(784, 250);
+        Console.Beep(880, 500);
+        Console.Beep(587, 500);
+        Console.Beep(523, 250);
+        Console.Beep(659, 250);
+        Console.Beep(587, 975);
+    }
+    static void Win()
+    {
+        Console.Beep(587, 160);
+        Console.Beep(698, 160);
+        Console.Beep(1175, 280);
+        Thread.Sleep(150);
+
+        Console.Beep(587, 160);
+        Console.Beep(698, 160);
+        Console.Beep(1175, 280);
+        Thread.Sleep(150);
+
+        Console.Beep(1319, 250);
+        Thread.Sleep(100);
+        Console.Beep(1397, 150);
+        Thread.Sleep(20);
+        Console.Beep(1319, 150);
+        Thread.Sleep(20);
+        Console.Beep(1397, 150);
+        Thread.Sleep(20);
+        Console.Beep(1319, 150);
+        Thread.Sleep(20);
+        Console.Beep(1047, 150);
+        Thread.Sleep(20);
+        Console.Beep(880, 180);
+        Thread.Sleep(300);
+
+        Console.Beep(880, 250);
+        Console.Beep(587, 250);
+        Console.Beep(698, 200);
+        Console.Beep(784, 200);
+        Console.Beep(880, 280);
+        Thread.Sleep(300);
+
+        Console.Beep(880, 250);
+        Console.Beep(587, 250);
+        Console.Beep(698, 200);
+        Console.Beep(784, 200);
+        Console.Beep(659, 360);
     }
 }

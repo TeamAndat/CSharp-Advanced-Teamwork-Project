@@ -9,7 +9,7 @@ class Terrain
 
     public Terrain(int x, int y, int shapeRnd)
     {
-        char[] shapes = { '\u2588', '\u2580', '\u2593', '\u2588', '\u2588' };
+        char[] shapes = { '\u2588', '\u2580', '\u2593', '\u2588', '\u2588' }; // █ , ▀ , ▓ , █ , █
         this.color = ConsoleColor.White;
         this.X = x;
         this.Y = y;

@@ -9,11 +9,11 @@ class Enemies
     public int X { get; set; }
     public int Y { get; set; }
 
-    public Enemies(int x, int y)
+    public Enemies(int x, int y, int health, int damage)
     {
-        this.HP = 40;
-        this.dmg = 5;
-        this.shape = '\u263A';
+        this.HP = health;
+        this.dmg = damage;
+        this.shape = '\u263A'; //☺
         this.color = ConsoleColor.Red;
         this.X = x;
         this.Y = y;
